@@ -9,7 +9,10 @@
     <string name="video_title">Video Title</string>
     <string name="video_description">Video Description</string>
     <string name="no_video_selected">No Video Selected</string>
+    <string name="server_loc_holder">192.186.10.14:4881</string>
     
     <string name="watch">Watch</string>
+    <string name="server_url">Server Location</string>
+    <string name="login">Login</string>
 
 </resources>

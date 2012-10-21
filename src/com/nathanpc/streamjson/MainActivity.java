@@ -16,7 +16,9 @@ import com.nathanpc.streamjson.restful.RESTClient;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -43,6 +45,7 @@ public class MainActivity extends ListActivity {
 	private TextView videoDescription;
 	private Button playButton;
 	
+	public Fields fields;
 	public ImageLoader imageLoader;
 	private JSONArray videos;
 	private List<HashMap<String, String>> videoList;
@@ -57,6 +60,12 @@ public class MainActivity extends ListActivity {
         // Initialize variables
         imageLoader = new ImageLoader(getApplicationContext());
         videoList = new ArrayList<HashMap<String, String>>();
+        try {
+			fields = new Fields(this);
+		} catch (Exception e) {
+			e.printStackTrace();
+			generateAskModal("ERROR: " + e.getMessage(), "Login");
+		}
         
         setupUI();
         new getVideoListTask().execute();
@@ -116,7 +125,7 @@ public class MainActivity extends ListActivity {
     	noVideoSelectedView.setVisibility(View.INVISIBLE);
     	detailView.setVisibility(View.VISIBLE);
     	
-    	imageLoader.DisplayImage(Fields.server_location + "/getPoster/" + id, videoPoster);
+    	imageLoader.DisplayImage(fields.server_location + "/getPoster/" + id, videoPoster);
     	videoTitle.setText(title);
     	videoDescription.setText(description);
     	
@@ -137,7 +146,7 @@ public class MainActivity extends ListActivity {
 	    protected JSONObject doInBackground(String... arg) {
 	    	Log.i("REST", "Started");
 	    	
-	    	JSONObject json = RESTClient.GET(Fields.server_location + "/list");
+	    	JSONObject json = RESTClient.GET(fields.server_location + "/list");
 	    	return json;
 	    }
 
@@ -160,7 +169,7 @@ public class MainActivity extends ListActivity {
 
 	 				String id = video.getString("id");
 	 				String title = video.getString("title");
-	 				String poster = Fields.server_location +  "/getPoster/" + video.getString("id");
+	 				String poster = fields.server_location +  "/getPoster/" + video.getString("id");
 	 				String description = video.getJSONObject("description").getString("text");
 	 			    
 	 				HashMap<String, String> tmp_map = new HashMap<String,String>();
@@ -173,11 +182,44 @@ public class MainActivity extends ListActivity {
 	 		} catch (JSONException e) {
 	 			Toast.makeText(getApplicationContext(), "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 	 			Log.e("JSON Parse", e.getMessage());
+	 		} catch (NullPointerException e) {
+	 			e.printStackTrace();
+				generateAskModal("Looks like you entered the incorrect location to your stream.json server", "Login", "Try Again");
 	 		}
 	 		
 	 		populateList();
 	     }
 	}
+    
+    public void generateAskModal(String message, String positive, String neutral) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage(message).setPositiveButton(positive, dialogClickListener).setNeutralButton(neutral, dialogClickListener).show();
+    }
+    
+    public void generateAskModal(String message, String positive) {
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setMessage(message).setPositiveButton(positive, dialogClickListener).show();
+    }
+    
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+            case DialogInterface.BUTTON_POSITIVE:
+            	Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            	intent.putExtra("retry", true);
+            	
+		    	startActivity(intent);
+                break;
+            case DialogInterface.BUTTON_NEUTRAL:
+            	new getVideoListTask().execute();
+            	break;
+            case DialogInterface.BUTTON_NEGATIVE:
+                finish();
+                break;
+            }
+        }
+    };
     
     private class getVideoURLTask extends AsyncTask<String, Void, String> {
 		//private ProgressBar progress;
@@ -185,7 +227,7 @@ public class MainActivity extends ListActivity {
 	    protected String doInBackground(String... arg) {
 	    	Log.i("REST", "Started");
 	    	
-	    	String url = RESTClient.rawGET(Fields.server_location + "/getVideo/" + arg[0]);
+	    	String url = RESTClient.rawGET(fields.server_location + "/getVideo/" + arg[0]);
 	    	return url;
 	    }
 
