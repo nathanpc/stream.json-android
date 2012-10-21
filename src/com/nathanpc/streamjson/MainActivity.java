@@ -3,7 +3,6 @@ package com.nathanpc.streamjson;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,11 +15,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ActionBar;
 import android.app.ListActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class MainActivity extends ListActivity {
 	private ActionBar actionBar;
@@ -39,6 +41,7 @@ public class MainActivity extends ListActivity {
         videoList = new ArrayList<HashMap<String, String>>();
         
         setupUI();
+        new getVideoListTask().execute("");
     }
 
     @Override
@@ -47,11 +50,29 @@ public class MainActivity extends ListActivity {
         return true;
     }
     
-    public void setupUI() {
+    private void setupUI() {
     	actionBar = getActionBar();
         
         listView = getListView();
         listView.setTextFilterEnabled(true);
+    }
+    
+    private void populateList() {
+    	// TODO: Add Poster image stuff.
+        String[] from = { "title", "description" };
+        int[] to = { R.id.item_video_title, R.id.item_video_description };
+
+        SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), videoList, R.layout.list_item, from, to);
+        listView.setAdapter(adapter);
+        
+        Log.i("LIST", "Populated");
+        
+        listView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Toast.makeText(getApplicationContext(), videoList.get(position).get("title"), Toast.LENGTH_SHORT).show();
+			}
+        });
     }
     
     // The mess to do HTTP requests in Android:
@@ -59,7 +80,10 @@ public class MainActivity extends ListActivity {
 		//private ProgressBar progress;
 	    
 	    protected JSONObject doInBackground(String... arg) {
-	    	return RESTClient.GET(Fields.server_location + "/list");
+	    	Log.i("REST", "Started");
+	    	
+	    	JSONObject json = RESTClient.GET(Fields.server_location + "/list");
+	    	return json;
 	    }
 
 	    @Override
@@ -71,6 +95,7 @@ public class MainActivity extends ListActivity {
 
 		protected void onPostExecute(JSONObject json) {
 			//progress.setVisibility(View.GONE);
+			Log.i("REST", "Parsing");
 
 	    	try {
 	 			videos = json.getJSONArray("video");
@@ -90,9 +115,10 @@ public class MainActivity extends ListActivity {
 	 			}
 	 		} catch (JSONException e) {
 	 			Toast.makeText(getApplicationContext(), "ERROR: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+	 			Log.e("JSON Parse", e.getMessage());
 	 		}
 	 		
-	 		//populateList(titles, services);
+	 		populateList();
 	     }
 	}
 }

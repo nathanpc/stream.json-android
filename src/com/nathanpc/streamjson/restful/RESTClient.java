@@ -19,6 +19,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.util.Log;
+
 import com.nathanpc.streamjson.restful.Convert;
 
 public class RESTClient {
@@ -37,6 +39,7 @@ public class RESTClient {
 
 		try {
 			response = httpclient.execute(httpget);
+			Log.v("response code", response.getStatusLine().getStatusCode() + ""); 
 
 			// Get hold of the response entity
 			HttpEntity entity = response.getEntity();
@@ -62,6 +65,8 @@ public class RESTClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
