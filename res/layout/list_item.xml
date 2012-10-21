@@ -9,12 +9,11 @@
 
     <ImageView
         android:id="@+id/item_video_poster"
-        android:layout_width="60dp"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_width="70dp"
+        android:layout_height="110dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         android:contentDescription="@string/acce" />
 
     <TextView
@@ -23,6 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/item_video_poster"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/item_video_poster"
         android:ellipsize="end"
         android:textAppearance="?android:attr/textAppearanceMedium" />
@@ -34,9 +34,10 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/item_video_title"
+        android:layout_marginLeft="10dp"
         android:layout_toRightOf="@+id/item_video_poster"
         android:ellipsize="end"
-        android:maxLines="3"
+        android:maxLines="5"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

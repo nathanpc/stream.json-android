@@ -8,6 +8,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.fedorvlasov.lazylist.ImageLoader;
+import com.nathanpc.streamjson.adapter.ImageSimpleAdapter;
 import com.nathanpc.streamjson.misc.Fields;
 import com.nathanpc.streamjson.restful.RESTClient;
 
@@ -28,6 +30,7 @@ public class MainActivity extends ListActivity {
 	private ActionBar actionBar;
 	private ListView listView;
 	
+	public ImageLoader imageLoader;
 	private JSONArray videos;
 	private List<HashMap<String, String>> videoList;
 
@@ -38,6 +41,7 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.main_10inch);
         
         // Initialize variables
+        imageLoader = new ImageLoader(getApplicationContext());
         videoList = new ArrayList<HashMap<String, String>>();
         
         setupUI();
@@ -59,10 +63,10 @@ public class MainActivity extends ListActivity {
     
     private void populateList() {
     	// TODO: Add Poster image stuff.
-        String[] from = { "title", "description" };
-        int[] to = { R.id.item_video_title, R.id.item_video_description };
+        String[] from = { "poster", "title", "description" };
+        int[] to = { R.id.item_video_poster, R.id.item_video_title, R.id.item_video_description };
 
-        SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), videoList, R.layout.list_item, from, to);
+        ImageSimpleAdapter adapter = new ImageSimpleAdapter(getBaseContext(), imageLoader, videoList, R.layout.list_item, from, to);
         listView.setAdapter(adapter);
         
         Log.i("LIST", "Populated");
