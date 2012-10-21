@@ -72,6 +72,41 @@ public class RESTClient {
 		return null;
 	}
 	
+	public static String rawGET(String url) {
+		HttpClient httpclient = new DefaultHttpClient();
+		HttpGet httpget = new HttpGet(url); 
+		HttpResponse response;
+
+		try {
+			response = httpclient.execute(httpget);
+			Log.v("response code", response.getStatusLine().getStatusCode() + ""); 
+
+			// Get hold of the response entity
+			HttpEntity entity = response.getEntity();
+			// If the response does not enclose an entity, there is no need
+			// to worry about connection release
+
+			if (entity != null) {
+
+				// A Simple JSON Response Read
+				InputStream instream = entity.getContent();
+				String result = Convert.StreamToString(instream);
+				instream.close();
+				
+				return result;
+			}
+
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static String POST(String url, String[] argNames, String[] argValues) {
 		// Create a new HttpClient and Post Header
 		HttpClient httpclient = new DefaultHttpClient();

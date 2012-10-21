@@ -60,6 +60,7 @@
                     android:id="@+id/video_description"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:isScrollContainer="true"
                     android:text="@string/video_description"
                     android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -91,7 +92,9 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:text="@string/no_video_selected"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="visible" />
+
         </RelativeLayout>
     </LinearLayout>
 
