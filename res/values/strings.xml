@@ -1,0 +1,15 @@
+<resources>
+
+    <string name="app_name">stream.json</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">stream.json</string>
+    
+    <!-- Placeholders -->
+    <string name="acce"></string>
+    <string name="video_title">Video Title</string>
+    <string name="video_description">Video Description</string>
+    <string name="no_video_selected">No Video Selected</string>
+    
+    <string name="watch">Watch</string>
+
+</resources>
