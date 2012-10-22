@@ -50,6 +50,7 @@ public class MainActivity extends ListActivity {
 	private JSONArray videos;
 	private List<HashMap<String, String>> videoList;
 	public String currentVideoID;
+	private boolean resumeHasRun = false;
 	public boolean isComingFromAdd;
 
     @Override
@@ -76,6 +77,12 @@ public class MainActivity extends ListActivity {
     @Override
 	protected void onResume() {
 		super.onResume();
+		
+		if (!resumeHasRun) {
+	        resumeHasRun = true;
+	        return;
+	    }
+		
 		// TODO: Refresh the shit if coming back from AddActivity!
 		if (isComingFromAdd) {
 			// TODO: Work on why this is just appending stuff to the list.
