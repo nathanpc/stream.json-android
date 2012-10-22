@@ -14,7 +14,6 @@ public class LoginActivity extends Activity {
 	private Button btLogin;
 	public static final String PREFS_NAME = "StreamJSON";
 	public SharedPreferences settings;
-	private Boolean isRetry;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,11 +27,7 @@ public class LoginActivity extends Activity {
         
         if (server_loc != null) {
         	try {
-            	isRetry = getIntent().getExtras().getBoolean("retry");
-            	
-            	if (!isRetry) {
-    				showMain();
-    			}
+            	getIntent().getExtras().getBoolean("retry");
             } catch (NullPointerException e) {
             	showMain();
             }
