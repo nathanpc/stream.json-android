@@ -50,6 +50,7 @@ public class MainActivity extends ListActivity {
 	private JSONArray videos;
 	private List<HashMap<String, String>> videoList;
 	public String currentVideoID;
+	public boolean isComingFromAdd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +59,7 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.main_10inch);
         
         // Initialize variables
+        isComingFromAdd = false;
         imageLoader = new ImageLoader(getApplicationContext());
         videoList = new ArrayList<HashMap<String, String>>();
         try {
@@ -72,6 +74,16 @@ public class MainActivity extends ListActivity {
     }
 
     @Override
+	protected void onResume() {
+		super.onResume();
+		// TODO: Refresh the shit if coming back from AddActivity!
+		if (isComingFromAdd) {
+			// TODO: Work on why this is just appending stuff to the list.
+			new getVideoListTask().execute();
+		}
+	}
+
+	@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -82,6 +94,10 @@ public class MainActivity extends ListActivity {
     	switch (item.getItemId()) {
     		case R.id.add_menu:
     			Intent intent = new Intent(MainActivity.this, AddActivity.class);
+    			intent.putExtra("server_location", fields.server_location);
+    			
+    			isComingFromAdd = true;
+    			
     	    	startActivity(intent);
     			break;
     	}
