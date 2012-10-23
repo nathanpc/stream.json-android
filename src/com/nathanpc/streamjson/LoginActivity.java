@@ -27,29 +27,34 @@ public class LoginActivity extends Activity {
         
         setupUI();
         
-        if (firstShow) {
-        	if (server_loc != null) {
-            	try {
-                	getIntent().getExtras().getBoolean("retry");
-                } catch (NullPointerException e) {
-                	Log.i("Server Location Already Saved", "Going to start the MainActivity");
-                	showMain();
-                }
-    		}
-        	
-        	firstShow = false;
-        } else {
-        	finish();
-        }
+    	if (server_loc != null) {
+        	try {
+            	getIntent().getExtras().getBoolean("retry");
+            } catch (NullPointerException e) {
+            	if (firstShow) {
+            		Log.i("Server Location Already Saved", "Going to start the MainActivity");
+            		showMain();
+            	}
+            	
+            	firstShow = false;
+            }
+		}
     }
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		
-		Log.i("onResume", "Another Resume");
-		
-		finish();
+		if (firstShow) {
+			firstShow = false;
+			return;
+		}
+		try {
+        	getIntent().getExtras().getBoolean("retry");
+		} catch (NullPointerException e) {
+			Log.i("onResume", "Another Resume");
+			finish();
+		}
 	}
 	
 	private void setupUI() {

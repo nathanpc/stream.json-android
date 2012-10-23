@@ -27,15 +27,16 @@
             android:name=".MainActivity"
             android:screenOrientation="landscape"
             android:label="@string/title_activity_main" >
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.HOME"/>
-            </intent-filter>
         </activity>
         
         <activity
             android:name=".AddActivity"
             android:label="@string/add_video" >
+        </activity>
+        
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/about" >
         </activity>
     </application>
 

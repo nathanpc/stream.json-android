@@ -14,6 +14,7 @@
     <string name="watch">Watch</string>
     <string name="server_url">Server Location</string>
     <string name="login">Login</string>
+    <string name="logout">Log Out</string>
     <string name="add_video">Add Video</string>
     
     <string name="id">ID</string>
@@ -28,5 +29,14 @@
     
     <string name="add">Add</string>
     <string name="cancel">Cancel</string>
+    
+    <string name="about">About</string>
+    <string name="developed_by">Developed by</string>
+    <string name="me">Nathan Campos</string>
+    <string name="my_url">http://about.me/nathanpc</string>
+    <string name="icon_by">Icon Design by</string>
+    <string name="artist">Thrasos Varnava</string>
+    <string name="art_link">http://www.iconarchive.com/show/slick-drives-icons-by-thvg/Movies-Drive-icon.html</string>
+    <string name="artist_site">http://thvg.deviantart.com/</string>
 
 </resources>

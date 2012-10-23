@@ -5,4 +5,14 @@
         android:icon="@drawable/ic_action_add"
         android:showAsAction="ifRoom|withText"
         />
+    <item
+        android:id="@+id/logout_menu"
+        android:title="@string/logout"
+        android:showAsAction="never"
+        />
+    <item
+        android:id="@+id/about_menu"
+        android:title="@string/about"
+        android:showAsAction="never"
+        />
 </menu>

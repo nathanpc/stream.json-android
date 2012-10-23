@@ -19,6 +19,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +47,9 @@ public class MainActivity extends ListActivity {
 	private Button playButton;
 	
 	public Fields fields;
+	public static final String PREFS_NAME = "StreamJSON";
+	public SharedPreferences settings;
+
 	public ImageLoader imageLoader;
 	private JSONArray videos;
 	private List<HashMap<String, String>> videoList;
@@ -83,7 +87,7 @@ public class MainActivity extends ListActivity {
 	        return;
 	    }
 		
-		// TODO: Refresh the shit if coming back from AddActivity!
+		// Refresh the shit if coming back from AddActivity!
 		if (isComingFromAdd) {
 			// TODO: Work on why this is just appending stuff to the list.
 			new getVideoListTask().execute();
@@ -100,12 +104,25 @@ public class MainActivity extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     		case R.id.add_menu:
-    			Intent intent = new Intent(MainActivity.this, AddActivity.class);
-    			intent.putExtra("server_location", fields.server_location);
+    			Intent addIntent = new Intent(this, AddActivity.class);
+    			addIntent.putExtra("server_location", fields.server_location);
     			
     			isComingFromAdd = true;
     			
-    	    	startActivity(intent);
+    	    	startActivity(addIntent);
+    			break;
+    		case R.id.logout_menu:
+    			settings = getSharedPreferences(PREFS_NAME, 0);
+    			settings.edit().remove("server_location").commit();
+    			
+    			Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            	intent.putExtra("retry", true);
+            	
+		    	startActivity(intent);
+    			break;
+    		case R.id.about_menu:
+    			Intent aboutIntent = new Intent(this, AboutActivity.class);
+    	    	startActivity(aboutIntent);
     			break;
     	}
 
