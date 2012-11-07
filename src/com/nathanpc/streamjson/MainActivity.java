@@ -214,6 +214,7 @@ public class MainActivity extends ListActivity {
 			Log.i("REST", "Parsing");
 
 	    	try {
+	    		videoList.clear();
 	 			videos = json.getJSONArray("video");
 
 	 			for (int i = 0; i < videos.length(); ++i) {
